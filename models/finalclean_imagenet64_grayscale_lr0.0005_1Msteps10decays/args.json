@@ -1,0 +1,39 @@
+{
+  "name": "finalclean_imagenet64_grayscale_lr0.0005_1Msteps10decays",
+  "dir": "experiments",
+  "dataset": "ImageNet64",
+  "data_subset": "None",
+  "grayscale": true,
+  "horizontal_flip": true,
+  "spatial_size": null,
+  "noise_sampler": "WhiteGaussianSampler()",
+  "noise_covariance": null,
+  "noise_level_sampler": "UniformLog",
+  "min_noise_level": {
+    "x": 90.0,
+    "unit": "psnr"
+  },
+  "max_noise_level": {
+    "x": -30.0,
+    "unit": "psnr"
+  },
+  "embed_noise_level_in_range": false,
+  "model": "EnergyModel",
+  "model_kwargs": "dict()",
+  "network": "UNet",
+  "network_kwargs": "{'num_scales':3,'group_size':1,'num_layers_encoder_block':3,'num_layers_mid_block':3,'num_layers_decoder_block':3}",
+  "reparam_kwargs": "{'conversion':'inner_product'}",
+  "mse_var_exponent": -1.0,
+  "noise_score_var_exponent": 0.0,
+  "train_noise_score": 1.0,
+  "train_batch_size": 128,
+  "num_workers": 0,
+  "num_training_steps": 1000000,
+  "lr": 0.0005,
+  "lr_decay_every": 100000,
+  "test_batch_size": 32,
+  "num_testing_steps": 100,
+  "test_every": 1000,
+  "log_gradients": false,
+  "f": null
+}

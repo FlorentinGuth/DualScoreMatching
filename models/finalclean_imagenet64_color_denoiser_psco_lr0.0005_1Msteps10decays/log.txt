@@ -1,0 +1,1463 @@
+[2025-04-15 17:57:49] INFO     Running on workergpu051 with slurm job id 4615242		(File "main.py", line 660, in print_cmd_line_and_save_args)
+[2025-04-15 17:57:49] INFO     Command line: main.py --dataset ImageNet64 --no-grayscale --train-batch-size 128 --test-batch-size 32 --network UNet --network-kwargs {'num_scales':3,'group_size':1,'num_layers_encoder_block':3,'num_layers_mid_block':3,'num_layers_decoder_block':3} --model DenoiserModel --reparam-kwargs {'output_scaling':1,'residual':True} --min-noise-level psnr=90 --max-noise-level psnr=-30 --noise-level-sampler UniformLog --mse-var-exponent -1 --lr 0.0005 --num-training-steps 1_000_000 --lr-decay-every 100_000 --name finalclean_imagenet64_color_denoiser_psco_lr0.0005_1Msteps10decays		(File "main.py", line 661, in print_cmd_line_and_save_args)
+[2025-04-15 17:57:49] INFO     Experiment running in experiments/finalclean_imagenet64_color_denoiser_psco_lr0.0005_1Msteps10decays		(File "main.py", line 662, in print_cmd_line_and_save_args)
+[2025-04-15 17:57:49] INFO     Arguments: {'name': 'finalclean_imagenet64_color_denoiser_psco_lr0.0005_1Msteps10decays', 'dir': 'experiments', 'dataset': 'ImageNet64', 'data_subset': 'None', 'grayscale': False, 'horizontal_flip': True, 'spatial_size': None, 'noise_sampler': 'WhiteGaussianSampler()', 'noise_covariance': None, 'noise_level_sampler': 'UniformLog', 'min_noise_level': {'x': 90.0, 'unit': 'psnr'}, 'max_noise_level': {'x': -30.0, 'unit': 'psnr'}, 'embed_noise_level_in_range': False, 'model': 'DenoiserModel', 'model_kwargs': 'dict()', 'network': 'UNet', 'network_kwargs': "{'num_scales':3,'group_size':1,'num_layers_encoder_block':3,'num_layers_mid_block':3,'num_layers_decoder_block':3}", 'reparam_kwargs': "{'output_scaling':1,'residual':True}", 'mse_var_exponent': -1.0, 'noise_score_var_exponent': 0, 'train_noise_score': None, 'train_batch_size': 128, 'num_workers': 0, 'num_training_steps': 1000000, 'lr': 0.0005, 'lr_decay_every': 100000, 'test_batch_size': 32, 'num_testing_steps': 100, 'test_every': 10000, 'log_gradients': False, 'f': None}		(File "main.py", line 663, in print_cmd_line_and_save_args)
+[2025-04-15 17:57:49] INFO     Model:
+DenoiserModel(
+  (network): DataParallel(
+    (module): Reparameterization(
+      expr="y - t*f(y)"
+      (network): UNet(
+        (noise_var_embedding): NoiseVarEmbedding(
+          fourier_dim=64, time_embed_dim=256, t_min=1, t_max=100
+          (time_embed): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): SiLU()
+            (2): Linear(in_features=256, out_features=256, bias=True)
+            (3): SiLU()
+          )
+        )
+        (encoder): ModuleList(
+          (0): ConditionalSequential(
+            (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (7): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (8): GELU(approximate='none')
+          )
+          (1): ConditionalSequential(
+            (0): Conv2d(64, 128, kernel_size=(2, 2), stride=(2, 2), bias=False)
+            (1): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (7): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (8): GELU(approximate='none')
+          )
+          (2): ConditionalSequential(
+            (0): Conv2d(128, 256, kernel_size=(2, 2), stride=(2, 2), bias=False)
+            (1): Normalization(
+              num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (7): Normalization(
+              num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (8): GELU(approximate='none')
+          )
+        )
+        (middle_block): ConditionalSequential(
+          (0): Conv2d(256, 512, kernel_size=(2, 2), stride=(2, 2), bias=False)
+          (1): Normalization(
+            num_channels=512=512 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+            (conditioning_embedding): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (2): GELU(approximate='none')
+          (3): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (4): Normalization(
+            num_channels=512=512 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+            (conditioning_embedding): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (5): GELU(approximate='none')
+          (6): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2), bias=False)
+          (7): Normalization(
+            num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+            (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (8): GELU(approximate='none')
+        )
+        (decoder): ModuleList(
+          (0): ConditionalSequential(
+            (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          )
+          (1): ConditionalSequential(
+            (0): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2), bias=False)
+            (7): Normalization(
+              num_channels=64=64 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=64, bias=True)
+            )
+            (8): GELU(approximate='none')
+          )
+          (2): ConditionalSequential(
+            (0): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (1): Normalization(
+              num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (2): GELU(approximate='none')
+            (3): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+            (4): Normalization(
+              num_channels=256=256 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (5): GELU(approximate='none')
+            (6): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2), bias=False)
+            (7): Normalization(
+              num_channels=128=128 groups of size 1, conditioning_channels=256, homogeneous=True, learnable_weight=True, learnable_bias=False, center=True, normalize_by=stddev, preserve_scale=True, use_statistics=input
+              (conditioning_embedding): Linear(in_features=256, out_features=128, bias=True)
+            )
+            (8): GELU(approximate='none')
+          )
+        )
+      )
+    )
+  )
+)
+Model parameters:
+- network.module.network.noise_var_embedding.time_embed.0.weight: torch.Size([256, 64]) => 16_384 parameters
+- network.module.network.noise_var_embedding.time_embed.0.bias: torch.Size([256]) => 256 parameters
+- network.module.network.noise_var_embedding.time_embed.2.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.noise_var_embedding.time_embed.2.bias: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.0.0.weight: torch.Size([64, 3, 3, 3]) => 1_728 parameters
+- network.module.network.encoder.0.1.weight: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.0.1.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.encoder.0.1.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.0.3.weight: torch.Size([64, 64, 3, 3]) => 36_864 parameters
+- network.module.network.encoder.0.4.weight: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.0.4.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.encoder.0.4.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.0.6.weight: torch.Size([64, 64, 3, 3]) => 36_864 parameters
+- network.module.network.encoder.0.7.weight: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.0.7.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.encoder.0.7.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.encoder.1.0.weight: torch.Size([128, 64, 2, 2]) => 32_768 parameters
+- network.module.network.encoder.1.1.weight: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.1.1.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.encoder.1.1.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.1.3.weight: torch.Size([128, 128, 3, 3]) => 147_456 parameters
+- network.module.network.encoder.1.4.weight: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.1.4.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.encoder.1.4.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.1.6.weight: torch.Size([128, 128, 3, 3]) => 147_456 parameters
+- network.module.network.encoder.1.7.weight: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.1.7.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.encoder.1.7.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+- network.module.network.encoder.2.0.weight: torch.Size([256, 128, 2, 2]) => 131_072 parameters
+- network.module.network.encoder.2.1.weight: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.2.1.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.encoder.2.1.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.2.3.weight: torch.Size([256, 256, 3, 3]) => 589_824 parameters
+- network.module.network.encoder.2.4.weight: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.2.4.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.encoder.2.4.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.2.6.weight: torch.Size([256, 256, 3, 3]) => 589_824 parameters
+- network.module.network.encoder.2.7.weight: torch.Size([256]) => 256 parameters
+- network.module.network.encoder.2.7.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.encoder.2.7.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.middle_block.0.weight: torch.Size([512, 256, 2, 2]) => 524_288 parameters
+- network.module.network.middle_block.1.weight: torch.Size([512]) => 512 parameters
+- network.module.network.middle_block.1.conditioning_embedding.weight: torch.Size([512, 256]) => 131_072 parameters
+- network.module.network.middle_block.1.conditioning_embedding.bias: torch.Size([512]) => 512 parameters
+- network.module.network.middle_block.3.weight: torch.Size([512, 512, 3, 3]) => 2_359_296 parameters
+- network.module.network.middle_block.4.weight: torch.Size([512]) => 512 parameters
+- network.module.network.middle_block.4.conditioning_embedding.weight: torch.Size([512, 256]) => 131_072 parameters
+- network.module.network.middle_block.4.conditioning_embedding.bias: torch.Size([512]) => 512 parameters
+- network.module.network.middle_block.6.weight: torch.Size([512, 256, 2, 2]) => 524_288 parameters
+- network.module.network.middle_block.7.weight: torch.Size([256]) => 256 parameters
+- network.module.network.middle_block.7.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.middle_block.7.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.decoder.0.0.weight: torch.Size([64, 128, 3, 3]) => 73_728 parameters
+- network.module.network.decoder.0.1.weight: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.0.1.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.decoder.0.1.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.0.3.weight: torch.Size([64, 64, 3, 3]) => 36_864 parameters
+- network.module.network.decoder.0.4.weight: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.0.4.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.decoder.0.4.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.0.6.weight: torch.Size([3, 64, 3, 3]) => 1_728 parameters
+- network.module.network.decoder.1.0.weight: torch.Size([128, 256, 3, 3]) => 294_912 parameters
+- network.module.network.decoder.1.1.weight: torch.Size([128]) => 128 parameters
+- network.module.network.decoder.1.1.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.decoder.1.1.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+- network.module.network.decoder.1.3.weight: torch.Size([128, 128, 3, 3]) => 147_456 parameters
+- network.module.network.decoder.1.4.weight: torch.Size([128]) => 128 parameters
+- network.module.network.decoder.1.4.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.decoder.1.4.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+- network.module.network.decoder.1.6.weight: torch.Size([128, 64, 2, 2]) => 32_768 parameters
+- network.module.network.decoder.1.7.weight: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.1.7.conditioning_embedding.weight: torch.Size([64, 256]) => 16_384 parameters
+- network.module.network.decoder.1.7.conditioning_embedding.bias: torch.Size([64]) => 64 parameters
+- network.module.network.decoder.2.0.weight: torch.Size([256, 512, 3, 3]) => 1_179_648 parameters
+- network.module.network.decoder.2.1.weight: torch.Size([256]) => 256 parameters
+- network.module.network.decoder.2.1.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.decoder.2.1.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.decoder.2.3.weight: torch.Size([256, 256, 3, 3]) => 589_824 parameters
+- network.module.network.decoder.2.4.weight: torch.Size([256]) => 256 parameters
+- network.module.network.decoder.2.4.conditioning_embedding.weight: torch.Size([256, 256]) => 65_536 parameters
+- network.module.network.decoder.2.4.conditioning_embedding.bias: torch.Size([256]) => 256 parameters
+- network.module.network.decoder.2.6.weight: torch.Size([256, 128, 2, 2]) => 131_072 parameters
+- network.module.network.decoder.2.7.weight: torch.Size([128]) => 128 parameters
+- network.module.network.decoder.2.7.conditioning_embedding.weight: torch.Size([128, 256]) => 32_768 parameters
+- network.module.network.decoder.2.7.conditioning_embedding.bias: torch.Size([128]) => 128 parameters
+Total: 8_649_856 parameters
+Dataset:
+- Training set: 1_281_167 samples
+- Test set: 50_000 samples
+- Data info: shape (3, 64, 64) mean 0.45 stddev 0.27		(File "main.py", line 694, in print_model_and_params)
+[2025-04-15 17:58:20] INFO     Step 0: train loss 1.0353, test loss 1.0382		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 17:58:20] INFO     Time breakdown so far:
+- initialization: 43s884ms
+- cuda: 23s726ms
+- dataloading: 3s216ms
+- evaluation: 2s517ms
+- checkpointing: 528ms
+- noise: 378ms
+- plotting: 336ms
+- logging: 		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 18:17:31] INFO     Step 10000: train loss 0.4753, test loss 0.4607		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 18:17:31] INFO     Time breakdown so far:
+- cuda: 7m24s617ms
+- backward: 5m30s623ms
+- dataloading: 5m09s617ms
+- forward: 1m28s025ms
+- initialization: 43s884ms
+- evaluation: 4s341ms
+- noise: 3s319ms
+- checkpointing: 1s
+- plotting: 620ms
+- logging: 4ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 18:36:43] INFO     Step 20000: train loss 0.4322, test loss 0.4382		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 18:36:43] INFO     Time breakdown so far:
+- cuda: 14m23s579ms
+- backward: 11m02s034ms
+- dataloading: 10m18s057ms
+- forward: 2m55s082ms
+- initialization: 43s884ms
+- noise: 6s209ms
+- evaluation: 6s158ms
+- checkpointing: 1s507ms
+- plotting: 850ms
+- logging: 8ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 18:55:54] INFO     Step 30000: train loss 6.5864, test loss 11.2909		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 18:55:54] INFO     Time breakdown so far:
+- cuda: 21m25s010ms
+- backward: 16m32s540ms
+- dataloading: 15m24s580ms
+- forward: 4m22s712ms
+- initialization: 43s884ms
+- noise: 9s084ms
+- evaluation: 7s996ms
+- checkpointing: 1s617ms
+- plotting: 1s152ms
+- logging: 12ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 19:15:05] INFO     Step 40000: train loss 0.7362, test loss 0.7883		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 19:15:05] INFO     Time breakdown so far:
+- cuda: 28m21s896ms
+- backward: 22m02s539ms
+- dataloading: 20m35s187ms
+- forward: 5m51s203ms
+- initialization: 43s884ms
+- noise: 12s026ms
+- evaluation: 9s814ms
+- checkpointing: 1s725ms
+- plotting: 1s417ms
+- logging: 14ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 19:34:16] INFO     Step 50000: train loss 0.5062, test loss 0.5021		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 19:34:16] INFO     Time breakdown so far:
+- cuda: 35m22s463ms
+- backward: 27m33s579ms
+- dataloading: 25m43s094ms
+- forward: 7m17s530ms
+- initialization: 43s884ms
+- noise: 14s792ms
+- evaluation: 11s642ms
+- checkpointing: 1s990ms
+- plotting: 1s751ms
+- logging: 17ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 19:53:28] INFO     Step 60000: train loss 0.4418, test loss 0.4276		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 19:53:28] INFO     Time breakdown so far:
+- cuda: 42m16s860ms
+- backward: 33m02s929ms
+- dataloading: 30m55s204ms
+- forward: 8m47s847ms
+- initialization: 43s884ms
+- noise: 17s848ms
+- evaluation: 13s496ms
+- checkpointing: 2s272ms
+- plotting: 2s045ms
+- logging: 21ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 20:12:40] INFO     Step 70000: train loss 0.4307, test loss 0.4207		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 20:12:40] INFO     Time breakdown so far:
+- cuda: 49m15s305ms
+- backward: 38m33s012ms
+- dataloading: 36m04s588ms
+- forward: 10m16s276ms
+- initialization: 43s884ms
+- noise: 20s766ms
+- evaluation: 15s359ms
+- checkpointing: 2s590ms
+- plotting: 2s541ms
+- logging: 24ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 20:31:50] INFO     Step 80000: train loss 0.4978, test loss 0.5066		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 20:31:50] INFO     Time breakdown so far:
+- cuda: 56m14s196ms
+- backward: 44m03s231ms
+- dataloading: 41m12s658ms
+- forward: 11m44s566ms
+- initialization: 43s884ms
+- noise: 23s686ms
+- evaluation: 17s209ms
+- plotting: 2s832ms
+- checkpointing: 2s707ms
+- logging: 26ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 20:51:02] INFO     Step 90000: train loss 0.4330, test loss 0.4320		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 20:51:02] INFO     Time breakdown so far:
+- cuda: 1h03m14s085ms
+- backward: 49m33s482ms
+- dataloading: 46m20s582ms
+- forward: 13m12s643ms
+- initialization: 43s884ms
+- noise: 26s598ms
+- evaluation: 19s043ms
+- plotting: 3s122ms
+- checkpointing: 2s811ms
+- logging: 29ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 21:10:14] INFO     Step 100000: train loss 0.4195, test loss 0.4314		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 21:10:14] INFO     Time breakdown so far:
+- cuda: 1h10m11s695ms
+- backward: 55m03s603ms
+- dataloading: 51m29s992ms
+- forward: 14m41s866ms
+- initialization: 43s884ms
+- noise: 29s586ms
+- evaluation: 20s902ms
+- plotting: 3s432ms
+- checkpointing: 3s121ms
+- logging: 31ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 21:29:25] INFO     Step 110000: train loss 0.4262, test loss 0.4286		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 21:29:25] INFO     Time breakdown so far:
+- cuda: 1h17m06s540ms
+- backward: 1h33s993ms
+- dataloading: 56m41s898ms
+- forward: 16m11s208ms
+- initialization: 43s884ms
+- noise: 32s536ms
+- evaluation: 22s734ms
+- plotting: 3s743ms
+- checkpointing: 3s260ms
+- logging: 35ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 21:48:37] INFO     Step 120000: train loss 0.4065, test loss 0.4276		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 21:48:37] INFO     Time breakdown so far:
+- cuda: 1h24m05s574ms
+- backward: 1h06m04s433ms
+- dataloading: 1h01m49s923ms
+- forward: 17m39s997ms
+- initialization: 43s884ms
+- noise: 35s428ms
+- evaluation: 24s580ms
+- plotting: 4s007ms
+- checkpointing: 3s365ms
+- logging: 38ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 22:07:48] INFO     Step 130000: train loss 0.4282, test loss 0.4279		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 22:07:48] INFO     Time breakdown so far:
+- cuda: 1h31m03s246ms
+- backward: 1h11m35s395ms
+- dataloading: 1h06m59s458ms
+- forward: 19m07s932ms
+- initialization: 43s884ms
+- noise: 38s360ms
+- evaluation: 26s423ms
+- plotting: 4s254ms
+- checkpointing: 3s486ms
+- logging: 40ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 22:27:00] INFO     Step 140000: train loss 0.4215, test loss 0.4317		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 22:27:00] INFO     Time breakdown so far:
+- cuda: 1h38m03s827ms
+- backward: 1h17m06s126ms
+- dataloading: 1h12m07s709ms
+- forward: 20m34s482ms
+- initialization: 43s884ms
+- noise: 41s219ms
+- evaluation: 28s232ms
+- plotting: 4s653ms
+- checkpointing: 3s823ms
+- logging: 43ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 22:46:11] INFO     Step 150000: train loss 0.4259, test loss 0.4295		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 22:46:11] INFO     Time breakdown so far:
+- cuda: 1h45m06s676ms
+- backward: 1h22m37s031ms
+- dataloading: 1h17m14s118ms
+- forward: 22m160ms
+- noise: 43s985ms
+- initialization: 43s884ms
+- evaluation: 30s040ms
+- plotting: 4s956ms
+- checkpointing: 3s969ms
+- logging: 46ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 23:05:22] INFO     Step 160000: train loss 0.4854, test loss 0.4778		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 23:05:22] INFO     Time breakdown so far:
+- cuda: 1h52m06s936ms
+- backward: 1h28m09s092ms
+- dataloading: 1h22m22s169ms
+- forward: 23m25s923ms
+- noise: 46s762ms
+- initialization: 43s884ms
+- evaluation: 31s867ms
+- plotting: 5s230ms
+- checkpointing: 4s125ms
+- logging: 49ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 23:24:33] INFO     Step 170000: train loss 0.4260, test loss 0.4292		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 23:24:33] INFO     Time breakdown so far:
+- cuda: 1h59m07s925ms
+- backward: 1h33m40s664ms
+- dataloading: 1h27m29s193ms
+- forward: 24m52s112ms
+- noise: 49s603ms
+- initialization: 43s884ms
+- evaluation: 33s696ms
+- plotting: 5s497ms
+- checkpointing: 4s240ms
+- logging: 51ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-15 23:43:44] INFO     Step 180000: train loss 0.4132, test loss 0.4122		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-15 23:43:44] INFO     Time breakdown so far:
+- cuda: 2h06m11s274ms
+- backward: 1h39m11s350ms
+- dataloading: 1h32m34s829ms
+- forward: 26m18s326ms
+- noise: 52s407ms
+- initialization: 43s884ms
+- evaluation: 35s503ms
+- plotting: 5s773ms
+- checkpointing: 4s539ms
+- logging: 54ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 00:02:54] INFO     Step 190000: train loss 0.4157, test loss 0.4298		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 00:02:54] INFO     Time breakdown so far:
+- cuda: 2h13m13s656ms
+- backward: 1h44m42s040ms
+- dataloading: 1h37m41s229ms
+- forward: 27m44s434ms
+- noise: 55s195ms
+- initialization: 43s884ms
+- evaluation: 37s311ms
+- plotting: 6s028ms
+- checkpointing: 4s692ms
+- logging: 57ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 00:22:06] INFO     Step 200000: train loss 0.4152, test loss 0.4220		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 00:22:06] INFO     Time breakdown so far:
+- cuda: 2h20m16s364ms
+- backward: 1h50m13s996ms
+- dataloading: 1h42m47s335ms
+- forward: 29m09s628ms
+- noise: 57s952ms
+- initialization: 43s884ms
+- evaluation: 39s110ms
+- plotting: 6s243ms
+- checkpointing: 4s965ms
+- logging: 60ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 00:41:16] INFO     Step 210000: train loss 0.4251, test loss 0.4328		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 00:41:16] INFO     Time breakdown so far:
+- cuda: 2h27m19s516ms
+- backward: 1h55m45s480ms
+- dataloading: 1h47m52s881ms
+- forward: 30m35s073ms
+- noise: 1m737ms
+- initialization: 43s884ms
+- evaluation: 40s904ms
+- plotting: 6s530ms
+- checkpointing: 5s130ms
+- logging: 63ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 01:00:27] INFO     Step 220000: train loss 0.4209, test loss 0.4160		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 01:00:27] INFO     Time breakdown so far:
+- cuda: 2h34m20s805ms
+- backward: 2h01m17s032ms
+- dataloading: 1h52m59s839ms
+- forward: 32m01s032ms
+- noise: 1m03s559ms
+- initialization: 43s884ms
+- evaluation: 42s687ms
+- plotting: 6s771ms
+- checkpointing: 5s250ms
+- logging: 66ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 01:19:38] INFO     Step 230000: train loss 0.4143, test loss 0.4180		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 01:19:38] INFO     Time breakdown so far:
+- cuda: 2h41m26s046ms
+- backward: 2h06m48s213ms
+- dataloading: 1h58m03s746ms
+- forward: 33m26s309ms
+- noise: 1m06s313ms
+- evaluation: 44s496ms
+- initialization: 43s884ms
+- plotting: 7s065ms
+- checkpointing: 5s357ms
+- logging: 68ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 01:38:48] INFO     Step 240000: train loss 0.4220, test loss 0.4165		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 01:38:48] INFO     Time breakdown so far:
+- cuda: 2h48m32s225ms
+- backward: 2h12m18s839ms
+- dataloading: 2h03m06s396ms
+- forward: 34m52s390ms
+- noise: 1m09s107ms
+- evaluation: 46s288ms
+- initialization: 43s884ms
+- plotting: 7s348ms
+- checkpointing: 5s552ms
+- logging: 71ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 01:57:59] INFO     Step 250000: train loss 0.4080, test loss 0.4238		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 01:57:59] INFO     Time breakdown so far:
+- cuda: 2h55m34s781ms
+- backward: 2h17m49s040ms
+- dataloading: 2h08m12s007ms
+- forward: 36m19s580ms
+- noise: 1m11s963ms
+- evaluation: 48s100ms
+- initialization: 43s884ms
+- plotting: 7s625ms
+- checkpointing: 5s664ms
+- logging: 73ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 02:17:09] INFO     Step 260000: train loss 0.4114, test loss 0.4206		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 02:17:09] INFO     Time breakdown so far:
+- cuda: 3h02m39s568ms
+- backward: 2h23m20s489ms
+- dataloading: 2h13m16s060ms
+- forward: 37m44s617ms
+- noise: 1m14s733ms
+- evaluation: 49s884ms
+- initialization: 43s884ms
+- plotting: 7s925ms
+- checkpointing: 5s782ms
+- logging: 75ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 02:36:20] INFO     Step 270000: train loss 0.4162, test loss 0.4171		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 02:36:20] INFO     Time breakdown so far:
+- cuda: 3h09m44s124ms
+- backward: 2h28m51s433ms
+- dataloading: 2h18m20s129ms
+- forward: 39m10s497ms
+- noise: 1m17s511ms
+- evaluation: 51s665ms
+- initialization: 43s884ms
+- plotting: 8s142ms
+- checkpointing: 5s894ms
+- logging: 78ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 02:55:30] INFO     Step 280000: train loss 0.4080, test loss 0.4178		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 02:55:30] INFO     Time breakdown so far:
+- cuda: 3h16m50s862ms
+- backward: 2h34m22s784ms
+- dataloading: 2h23m22s464ms
+- forward: 40m35s518ms
+- noise: 1m20s248ms
+- evaluation: 53s461ms
+- initialization: 43s884ms
+- plotting: 8s414ms
+- checkpointing: 6s007ms
+- logging: 80ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 03:14:41] INFO     Step 290000: train loss 0.4098, test loss 0.4121		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 03:14:41] INFO     Time breakdown so far:
+- cuda: 3h23m54s550ms
+- backward: 2h39m54s062ms
+- dataloading: 2h28m27s485ms
+- forward: 42m977ms
+- noise: 1m23s019ms
+- evaluation: 55s252ms
+- initialization: 43s884ms
+- plotting: 8s699ms
+- checkpointing: 6s341ms
+- logging: 83ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 03:33:51] INFO     Step 300000: train loss 0.4138, test loss 0.4225		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 03:33:51] INFO     Time breakdown so far:
+- cuda: 3h30m58s583ms
+- backward: 2h45m25s835ms
+- dataloading: 2h33m31s850ms
+- forward: 43m26s222ms
+- noise: 1m25s806ms
+- evaluation: 57s042ms
+- initialization: 43s884ms
+- plotting: 8s981ms
+- checkpointing: 6s462ms
+- logging: 86ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 03:53:02] INFO     Step 310000: train loss 0.4079, test loss 0.4149		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 03:53:02] INFO     Time breakdown so far:
+- cuda: 3h38m04s227ms
+- backward: 2h50m56s982ms
+- dataloading: 2h38m35s371ms
+- forward: 44m51s305ms
+- noise: 1m28s569ms
+- evaluation: 58s841ms
+- initialization: 43s884ms
+- plotting: 9s246ms
+- checkpointing: 6s579ms
+- logging: 88ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 04:12:12] INFO     Step 320000: train loss 0.4009, test loss 0.3936		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 04:12:12] INFO     Time breakdown so far:
+- cuda: 3h45m09s003ms
+- backward: 2h56m28s241ms
+- dataloading: 2h43m39s467ms
+- forward: 46m16s776ms
+- noise: 1m31s334ms
+- evaluation: 1m659ms
+- initialization: 43s884ms
+- plotting: 9s576ms
+- checkpointing: 6s950ms
+- logging: 91ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 04:31:23] INFO     Step 330000: train loss 0.4257, test loss 0.4221		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 04:31:23] INFO     Time breakdown so far:
+- cuda: 3h52m12s532ms
+- backward: 3h01m59s258ms
+- dataloading: 2h48m44s739ms
+- forward: 47m42s282ms
+- noise: 1m34s096ms
+- evaluation: 1m02s473ms
+- initialization: 43s884ms
+- plotting: 9s935ms
+- checkpointing: 7s068ms
+- logging: 94ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 04:50:34] INFO     Step 340000: train loss 0.4166, test loss 0.4194		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 04:50:34] INFO     Time breakdown so far:
+- cuda: 3h59m14s737ms
+- backward: 3h07m29s664ms
+- dataloading: 2h53m51s147ms
+- forward: 49m08s896ms
+- noise: 1m36s939ms
+- evaluation: 1m04s279ms
+- initialization: 43s884ms
+- plotting: 10s233ms
+- checkpointing: 7s189ms
+- logging: 97ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 05:09:44] INFO     Step 350000: train loss 0.4074, test loss 0.4191		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 05:09:44] INFO     Time breakdown so far:
+- cuda: 4h06m20s618ms
+- backward: 3h13m534ms
+- dataloading: 2h58m54s529ms
+- forward: 50m34s185ms
+- noise: 1m39s677ms
+- evaluation: 1m06s058ms
+- initialization: 43s884ms
+- plotting: 10s512ms
+- checkpointing: 7s302ms
+- logging: 100ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 05:28:55] INFO     Step 360000: train loss 0.4084, test loss 0.4185		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 05:28:55] INFO     Time breakdown so far:
+- cuda: 4h13m24s821ms
+- backward: 3h18m31s224ms
+- dataloading: 3h03m58s955ms
+- forward: 52m504ms
+- noise: 1m42s471ms
+- evaluation: 1m07s853ms
+- initialization: 43s884ms
+- plotting: 10s771ms
+- checkpointing: 7s667ms
+- logging: 102ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 05:48:05] INFO     Step 370000: train loss 0.4073, test loss 0.4064		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 05:48:05] INFO     Time breakdown so far:
+- cuda: 4h20m26s818ms
+- backward: 3h24m02s309ms
+- dataloading: 3h09m05s571ms
+- forward: 53m26s252ms
+- noise: 1m45s274ms
+- evaluation: 1m09s630ms
+- initialization: 43s884ms
+- plotting: 11s061ms
+- checkpointing: 7s790ms
+- logging: 104ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 06:07:19] INFO     Step 380000: train loss 0.4172, test loss 0.4149		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 06:07:19] INFO     Time breakdown so far:
+- cuda: 4h27m47s511ms
+- backward: 3h29m34s119ms
+- dataloading: 3h13m56s034ms
+- forward: 54m51s609ms
+- noise: 1m48s032ms
+- evaluation: 1m11s425ms
+- initialization: 43s884ms
+- plotting: 11s287ms
+- checkpointing: 7s932ms
+- logging: 108ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 06:26:30] INFO     Step 390000: train loss 0.4013, test loss 0.4080		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 06:26:30] INFO     Time breakdown so far:
+- cuda: 4h35m07s485ms
+- backward: 3h35m04s442ms
+- dataloading: 3h18m47s073ms
+- forward: 56m16s458ms
+- noise: 1m50s758ms
+- evaluation: 1m13s223ms
+- initialization: 43s884ms
+- plotting: 11s600ms
+- checkpointing: 8s059ms
+- logging: 111ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 06:45:43] INFO     Step 400000: train loss 0.4178, test loss 0.4159		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 06:45:43] INFO     Time breakdown so far:
+- cuda: 4h42m11s891ms
+- backward: 3h40m36s168ms
+- dataloading: 3h23m50s823ms
+- forward: 57m42s283ms
+- noise: 1m53s516ms
+- evaluation: 1m15s034ms
+- initialization: 43s884ms
+- plotting: 13s319ms
+- checkpointing: 8s715ms
+- logging: 114ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 07:04:55] INFO     Step 410000: train loss 0.4105, test loss 0.4115		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 07:04:55] INFO     Time breakdown so far:
+- cuda: 4h49m17s513ms
+- backward: 3h46m07s901ms
+- dataloading: 3h28m54s567ms
+- forward: 59m07s257ms
+- noise: 1m56s233ms
+- evaluation: 1m16s819ms
+- initialization: 43s884ms
+- plotting: 14s212ms
+- checkpointing: 9s149ms
+- logging: 116ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 07:24:05] INFO     Step 420000: train loss 0.4090, test loss 0.4184		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 07:24:05] INFO     Time breakdown so far:
+- cuda: 4h56m22s621ms
+- backward: 3h51m39s244ms
+- dataloading: 3h33m58s490ms
+- forward: 1h32s584ms
+- noise: 1m58s965ms
+- evaluation: 1m18s606ms
+- initialization: 43s884ms
+- plotting: 14s531ms
+- checkpointing: 9s274ms
+- logging: 118ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 07:43:16] INFO     Step 430000: train loss 0.4160, test loss 0.3998		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 07:43:16] INFO     Time breakdown so far:
+- cuda: 5h03m25s388ms
+- backward: 3h57m09s741ms
+- dataloading: 3h39m04s170ms
+- forward: 1h01m59s234ms
+- noise: 2m01s778ms
+- evaluation: 1m20s395ms
+- initialization: 43s884ms
+- plotting: 14s782ms
+- checkpointing: 9s390ms
+- logging: 121ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 08:02:26] INFO     Step 440000: train loss 0.4101, test loss 0.4128		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 08:02:26] INFO     Time breakdown so far:
+- cuda: 5h10m30s444ms
+- backward: 4h02m41s092ms
+- dataloading: 3h44m07s837ms
+- forward: 1h03m24s477ms
+- noise: 2m04s512ms
+- evaluation: 1m22s202ms
+- initialization: 43s884ms
+- plotting: 15s086ms
+- checkpointing: 9s532ms
+- logging: 124ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 08:21:37] INFO     Step 450000: train loss 0.4071, test loss 0.4070		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 08:21:37] INFO     Time breakdown so far:
+- cuda: 5h17m33s640ms
+- backward: 4h08m11s799ms
+- dataloading: 3h49m13s191ms
+- forward: 1h04m50s766ms
+- noise: 2m07s305ms
+- evaluation: 1m24s026ms
+- initialization: 43s884ms
+- plotting: 15s300ms
+- checkpointing: 9s685ms
+- logging: 127ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 08:40:47] INFO     Step 460000: train loss 0.4028, test loss 0.4093		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 08:40:47] INFO     Time breakdown so far:
+- cuda: 5h24m38s670ms
+- backward: 4h13m42s373ms
+- dataloading: 3h54m16s918ms
+- forward: 1h06m16s990ms
+- noise: 2m10s074ms
+- evaluation: 1m25s842ms
+- initialization: 43s884ms
+- plotting: 15s570ms
+- checkpointing: 9s817ms
+- logging: 130ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 08:59:58] INFO     Step 470000: train loss 0.4089, test loss 0.4121		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 08:59:58] INFO     Time breakdown so far:
+- cuda: 5h31m45s020ms
+- backward: 4h19m13s980ms
+- dataloading: 3h59m19s062ms
+- forward: 1h07m42s269ms
+- noise: 2m12s829ms
+- evaluation: 1m27s622ms
+- initialization: 43s884ms
+- plotting: 15s845ms
+- checkpointing: 10s008ms
+- logging: 132ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 09:19:08] INFO     Step 480000: train loss 0.4143, test loss 0.4232		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 09:19:08] INFO     Time breakdown so far:
+- cuda: 5h38m49s381ms
+- backward: 4h24m44s885ms
+- dataloading: 4h04m23s378ms
+- forward: 1h09m08s250ms
+- noise: 2m15s637ms
+- evaluation: 1m29s441ms
+- initialization: 43s884ms
+- plotting: 16s098ms
+- checkpointing: 10s143ms
+- logging: 135ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 09:38:19] INFO     Step 490000: train loss 0.4030, test loss 0.3984		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 09:38:19] INFO     Time breakdown so far:
+- cuda: 5h45m55s624ms
+- backward: 4h30m15s878ms
+- dataloading: 4h09m24s887ms
+- forward: 1h10m34s874ms
+- noise: 2m18s459ms
+- evaluation: 1m31s263ms
+- initialization: 43s884ms
+- plotting: 16s478ms
+- checkpointing: 10s259ms
+- logging: 138ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 09:57:30] INFO     Step 500000: train loss 0.4013, test loss 0.4099		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 09:57:30] INFO     Time breakdown so far:
+- cuda: 5h52m57s637ms
+- backward: 4h35m46s560ms
+- dataloading: 4h14m30s294ms
+- forward: 1h12m02s290ms
+- noise: 2m21s308ms
+- evaluation: 1m33s045ms
+- initialization: 43s884ms
+- plotting: 17s327ms
+- checkpointing: 10s526ms
+- logging: 140ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 10:16:40] INFO     Step 510000: train loss 0.3994, test loss 0.4130		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 10:16:40] INFO     Time breakdown so far:
+- cuda: 6h05s300ms
+- backward: 4h41m17s854ms
+- dataloading: 4h19m31s992ms
+- forward: 1h13m26s874ms
+- noise: 2m24s015ms
+- evaluation: 1m34s832ms
+- initialization: 43s884ms
+- plotting: 17s628ms
+- checkpointing: 10s657ms
+- logging: 144ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 10:35:51] INFO     Step 520000: train loss 0.4056, test loss 0.3966		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 10:35:51] INFO     Time breakdown so far:
+- cuda: 6h07m10s939ms
+- backward: 4h46m49s195ms
+- dataloading: 4h24m34s910ms
+- forward: 1h14m52s548ms
+- noise: 2m26s817ms
+- evaluation: 1m36s642ms
+- initialization: 43s884ms
+- plotting: 17s923ms
+- checkpointing: 10s764ms
+- logging: 146ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 10:55:02] INFO     Step 530000: train loss 0.3988, test loss 0.4042		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 10:55:02] INFO     Time breakdown so far:
+- cuda: 6h14m19s926ms
+- backward: 4h52m19s490ms
+- dataloading: 4h29m34s978ms
+- forward: 1h16m18s555ms
+- noise: 2m29s639ms
+- evaluation: 1m38s448ms
+- initialization: 43s884ms
+- plotting: 18s198ms
+- checkpointing: 10s874ms
+- logging: 149ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 11:14:12] INFO     Step 540000: train loss 0.4018, test loss 0.4133		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 11:14:12] INFO     Time breakdown so far:
+- cuda: 6h21m26s359ms
+- backward: 4h57m49s886ms
+- dataloading: 4h34m37s067ms
+- forward: 1h17m44s883ms
+- noise: 2m32s441ms
+- evaluation: 1m40s260ms
+- initialization: 43s884ms
+- plotting: 18s496ms
+- checkpointing: 10s990ms
+- logging: 151ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 11:33:22] INFO     Step 550000: train loss 0.4063, test loss 0.4056		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 11:33:22] INFO     Time breakdown so far:
+- cuda: 6h28m35s262ms
+- backward: 5h03m20s663ms
+- dataloading: 4h39m37s472ms
+- forward: 1h19m10s108ms
+- noise: 2m35s178ms
+- evaluation: 1m42s045ms
+- initialization: 43s884ms
+- plotting: 18s774ms
+- checkpointing: 11s113ms
+- logging: 153ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 11:52:32] INFO     Step 560000: train loss 0.4063, test loss 0.4110		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 11:52:32] INFO     Time breakdown so far:
+- cuda: 6h35m41s701ms
+- backward: 5h08m50s198ms
+- dataloading: 4h44m39s914ms
+- forward: 1h20m37s037ms
+- noise: 2m37s971ms
+- evaluation: 1m43s856ms
+- initialization: 43s884ms
+- plotting: 19s026ms
+- checkpointing: 11s234ms
+- logging: 156ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 12:11:43] INFO     Step 570000: train loss 0.4086, test loss 0.4100		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 12:11:43] INFO     Time breakdown so far:
+- cuda: 6h42m45s893ms
+- backward: 5h14m20s367ms
+- dataloading: 4h49m44s451ms
+- forward: 1h22m03s639ms
+- noise: 2m40s781ms
+- evaluation: 1m45s663ms
+- initialization: 43s884ms
+- plotting: 19s283ms
+- checkpointing: 11s354ms
+- logging: 161ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 12:30:53] INFO     Step 580000: train loss 0.4115, test loss 0.4017		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 12:30:53] INFO     Time breakdown so far:
+- cuda: 6h49m50s186ms
+- backward: 5h19m51s334ms
+- dataloading: 4h54m48s471ms
+- forward: 1h23m29s783ms
+- noise: 2m43s579ms
+- evaluation: 1m47s465ms
+- initialization: 43s884ms
+- plotting: 19s558ms
+- checkpointing: 11s466ms
+- logging: 165ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 12:50:04] INFO     Step 590000: train loss 0.4196, test loss 0.4182		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 12:50:04] INFO     Time breakdown so far:
+- cuda: 6h56m58s011ms
+- backward: 5h25m22s374ms
+- dataloading: 4h59m49s432ms
+- forward: 1h24m55s249ms
+- noise: 2m46s322ms
+- evaluation: 1m49s253ms
+- initialization: 43s884ms
+- plotting: 19s851ms
+- checkpointing: 11s567ms
+- logging: 167ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 13:09:14] INFO     Step 600000: train loss 0.4070, test loss 0.4023		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 13:09:14] INFO     Time breakdown so far:
+- cuda: 7h04m04s860ms
+- backward: 5h30m53s508ms
+- dataloading: 5h04m51s652ms
+- forward: 1h26m20s699ms
+- noise: 2m49s079ms
+- evaluation: 1m51s036ms
+- initialization: 43s884ms
+- plotting: 20s107ms
+- checkpointing: 11s681ms
+- logging: 170ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 13:28:25] INFO     Step 610000: train loss 0.4112, test loss 0.4013		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 13:28:25] INFO     Time breakdown so far:
+- cuda: 7h11m09s223ms
+- backward: 5h36m25s018ms
+- dataloading: 5h09m55s912ms
+- forward: 1h27m45s852ms
+- noise: 2m51s806ms
+- evaluation: 1m52s848ms
+- initialization: 43s884ms
+- plotting: 20s407ms
+- checkpointing: 11s794ms
+- logging: 172ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 13:47:35] INFO     Step 620000: train loss 0.4052, test loss 0.4286		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 13:47:35] INFO     Time breakdown so far:
+- cuda: 7h18m15s604ms
+- backward: 5h41m55s366ms
+- dataloading: 5h14m58s310ms
+- forward: 1h29m12s339ms
+- noise: 2m54s605ms
+- evaluation: 1m54s645ms
+- initialization: 43s884ms
+- plotting: 20s655ms
+- checkpointing: 11s963ms
+- logging: 174ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 14:06:46] INFO     Step 630000: train loss 0.3973, test loss 0.4154		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 14:06:46] INFO     Time breakdown so far:
+- cuda: 7h25m20s858ms
+- backward: 5h47m26s461ms
+- dataloading: 5h20m01s801ms
+- forward: 1h30m38s100ms
+- noise: 2m57s353ms
+- evaluation: 1m56s453ms
+- initialization: 43s884ms
+- plotting: 21s094ms
+- checkpointing: 12s080ms
+- logging: 177ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 14:25:57] INFO     Step 640000: train loss 0.3961, test loss 0.4071		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 14:25:57] INFO     Time breakdown so far:
+- cuda: 7h32m23s112ms
+- backward: 5h52m57s082ms
+- dataloading: 5h25m06s753ms
+- forward: 1h32m05s804ms
+- noise: 3m249ms
+- evaluation: 1m58s267ms
+- initialization: 43s884ms
+- plotting: 21s439ms
+- checkpointing: 12s190ms
+- logging: 179ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 14:45:07] INFO     Step 650000: train loss 0.4185, test loss 0.4141		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 14:45:07] INFO     Time breakdown so far:
+- cuda: 7h39m28s786ms
+- backward: 5h58m28s126ms
+- dataloading: 5h30m09s923ms
+- forward: 1h33m31s337ms
+- noise: 3m03s016ms
+- evaluation: 2m052ms
+- initialization: 43s884ms
+- plotting: 21s804ms
+- checkpointing: 12s323ms
+- logging: 182ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 15:04:18] INFO     Step 660000: train loss 0.4028, test loss 0.4111		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 15:04:18] INFO     Time breakdown so far:
+- cuda: 7h46m36s605ms
+- backward: 6h03m59s058ms
+- dataloading: 5h35m11s558ms
+- forward: 1h34m56s733ms
+- noise: 3m05s780ms
+- evaluation: 2m01s831ms
+- initialization: 43s884ms
+- plotting: 22s244ms
+- checkpointing: 12s436ms
+- logging: 186ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 15:23:29] INFO     Step 670000: train loss 0.4084, test loss 0.4076		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 15:23:29] INFO     Time breakdown so far:
+- cuda: 7h53m41s724ms
+- backward: 6h09m29s592ms
+- dataloading: 5h40m15s297ms
+- forward: 1h36m22s999ms
+- noise: 3m08s596ms
+- evaluation: 2m03s626ms
+- initialization: 43s884ms
+- plotting: 22s495ms
+- checkpointing: 12s540ms
+- logging: 188ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 15:42:39] INFO     Step 680000: train loss 0.4041, test loss 0.4077		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 15:42:39] INFO     Time breakdown so far:
+- cuda: 8h49s207ms
+- backward: 6h15m251ms
+- dataloading: 5h45m17s144ms
+- forward: 1h37m48s584ms
+- noise: 3m11s333ms
+- evaluation: 2m05s409ms
+- initialization: 43s884ms
+- plotting: 22s748ms
+- checkpointing: 12s675ms
+- logging: 191ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 16:01:50] INFO     Step 690000: train loss 0.4064, test loss 0.4169		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 16:01:50] INFO     Time breakdown so far:
+- cuda: 8h07m58s008ms
+- backward: 6h20m30s947ms
+- dataloading: 5h50m18s109ms
+- forward: 1h39m13s653ms
+- noise: 3m14s055ms
+- evaluation: 2m07s211ms
+- initialization: 43s884ms
+- plotting: 23s153ms
+- checkpointing: 12s811ms
+- logging: 193ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 16:21:01] INFO     Step 700000: train loss 0.4088, test loss 0.4017		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 16:21:01] INFO     Time breakdown so far:
+- cuda: 8h15m01s023ms
+- backward: 6h26m01s809ms
+- dataloading: 5h55m23s248ms
+- forward: 1h40m40s043ms
+- noise: 3m16s870ms
+- evaluation: 2m09s012ms
+- initialization: 43s884ms
+- plotting: 23s464ms
+- checkpointing: 13s175ms
+- logging: 196ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 16:40:11] INFO     Step 710000: train loss 0.4017, test loss 0.4147		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 16:40:11] INFO     Time breakdown so far:
+- cuda: 8h22m04s701ms
+- backward: 6h31m31s693ms
+- dataloading: 6h28s250ms
+- forward: 1h42m07s149ms
+- noise: 3m19s621ms
+- evaluation: 2m10s800ms
+- initialization: 43s884ms
+- plotting: 23s733ms
+- checkpointing: 13s275ms
+- logging: 198ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 16:59:22] INFO     Step 720000: train loss 0.4110, test loss 0.4116		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 16:59:22] INFO     Time breakdown so far:
+- cuda: 8h29m13s348ms
+- backward: 6h37m03s023ms
+- dataloading: 6h05m29s458ms
+- forward: 1h43m31s468ms
+- noise: 3m22s329ms
+- evaluation: 2m12s573ms
+- initialization: 43s884ms
+- plotting: 24s082ms
+- checkpointing: 13s381ms
+- logging: 200ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 17:18:34] INFO     Step 730000: train loss 0.4073, test loss 0.4014		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 17:18:34] INFO     Time breakdown so far:
+- cuda: 8h36m22s370ms
+- backward: 6h42m33s624ms
+- dataloading: 6h10m30s100ms
+- forward: 1h44m56s621ms
+- noise: 3m25s057ms
+- evaluation: 2m14s353ms
+- initialization: 43s884ms
+- plotting: 25s488ms
+- checkpointing: 13s784ms
+- logging: 202ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 17:37:45] INFO     Step 740000: train loss 0.4099, test loss 0.4006		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 17:37:45] INFO     Time breakdown so far:
+- cuda: 8h43m26s371ms
+- backward: 6h48m05s499ms
+- dataloading: 6h15m34s802ms
+- forward: 1h46m21s655ms
+- noise: 3m27s798ms
+- evaluation: 2m16s132ms
+- initialization: 43s884ms
+- plotting: 26s440ms
+- checkpointing: 13s899ms
+- logging: 205ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 17:56:55] INFO     Step 750000: train loss 0.3948, test loss 0.4106		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 17:56:55] INFO     Time breakdown so far:
+- cuda: 8h50m29s606ms
+- backward: 6h53m37s031ms
+- dataloading: 6h20m40s461ms
+- forward: 1h47m46s850ms
+- noise: 3m30s557ms
+- evaluation: 2m17s909ms
+- initialization: 43s884ms
+- plotting: 26s676ms
+- checkpointing: 14s003ms
+- logging: 207ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 18:16:06] INFO     Step 760000: train loss 0.4104, test loss 0.4068		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 18:16:06] INFO     Time breakdown so far:
+- cuda: 8h57m34s106ms
+- backward: 6h59m08s309ms
+- dataloading: 6h25m45s096ms
+- forward: 1h49m12s052ms
+- noise: 3m33s302ms
+- evaluation: 2m19s706ms
+- initialization: 43s884ms
+- plotting: 26s985ms
+- checkpointing: 14s088ms
+- logging: 209ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 18:35:17] INFO     Step 770000: train loss 0.4116, test loss 0.4033		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 18:35:17] INFO     Time breakdown so far:
+- cuda: 9h04m38s253ms
+- backward: 7h04m38s963ms
+- dataloading: 6h30m50s180ms
+- forward: 1h50m37s774ms
+- noise: 3m36s056ms
+- evaluation: 2m21s511ms
+- initialization: 43s884ms
+- plotting: 27s201ms
+- checkpointing: 14s206ms
+- logging: 211ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 18:54:27] INFO     Step 780000: train loss 0.4055, test loss 0.4068		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 18:54:27] INFO     Time breakdown so far:
+- cuda: 9h11m43s803ms
+- backward: 7h10m09s813ms
+- dataloading: 6h35m53s746ms
+- forward: 1h52m03s008ms
+- noise: 3m38s797ms
+- evaluation: 2m23s308ms
+- initialization: 43s884ms
+- plotting: 27s491ms
+- checkpointing: 14s307ms
+- logging: 214ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 19:13:37] INFO     Step 790000: train loss 0.4074, test loss 0.4028		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 19:13:37] INFO     Time breakdown so far:
+- cuda: 9h18m48s722ms
+- backward: 7h15m40s652ms
+- dataloading: 6h40m58s165ms
+- forward: 1h53m28s192ms
+- noise: 3m41s554ms
+- evaluation: 2m25s111ms
+- initialization: 43s884ms
+- plotting: 27s760ms
+- checkpointing: 14s411ms
+- logging: 216ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 19:32:48] INFO     Step 800000: train loss 0.4120, test loss 0.4103		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 19:32:48] INFO     Time breakdown so far:
+- cuda: 9h25m53s043ms
+- backward: 7h21m11s660ms
+- dataloading: 6h46m03s037ms
+- forward: 1h54m53s442ms
+- noise: 3m44s331ms
+- evaluation: 2m26s903ms
+- initialization: 43s884ms
+- plotting: 28s028ms
+- checkpointing: 14s536ms
+- logging: 218ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 19:51:58] INFO     Step 810000: train loss 0.4145, test loss 0.4023		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 19:51:58] INFO     Time breakdown so far:
+- cuda: 9h32m57s573ms
+- backward: 7h26m42s819ms
+- dataloading: 6h51m07s452ms
+- forward: 1h56m18s818ms
+- noise: 3m47s082ms
+- evaluation: 2m28s677ms
+- initialization: 43s884ms
+- plotting: 28s286ms
+- checkpointing: 14s651ms
+- logging: 220ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 20:11:09] INFO     Step 820000: train loss 0.4091, test loss 0.4055		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 20:11:09] INFO     Time breakdown so far:
+- cuda: 9h40m05s170ms
+- backward: 7h32m14s474ms
+- dataloading: 6h56m09s537ms
+- forward: 1h57m43s117ms
+- noise: 3m49s805ms
+- evaluation: 2m30s450ms
+- initialization: 43s884ms
+- plotting: 28s647ms
+- checkpointing: 14s754ms
+- logging: 224ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 20:30:19] INFO     Step 830000: train loss 0.4104, test loss 0.4120		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 20:30:19] INFO     Time breakdown so far:
+- cuda: 9h47m10s496ms
+- backward: 7h37m45s823ms
+- dataloading: 7h01m13s574ms
+- forward: 1h59m07s958ms
+- noise: 3m52s558ms
+- evaluation: 2m32s250ms
+- initialization: 43s884ms
+- plotting: 28s907ms
+- checkpointing: 14s860ms
+- logging: 226ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 20:49:30] INFO     Step 840000: train loss 0.4033, test loss 0.3974		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 20:49:30] INFO     Time breakdown so far:
+- cuda: 9h54m15s902ms
+- backward: 7h43m17s283ms
+- dataloading: 7h06m17s261ms
+- forward: 2h33s121ms
+- noise: 3m55s323ms
+- evaluation: 2m34s037ms
+- initialization: 43s884ms
+- plotting: 29s191ms
+- checkpointing: 14s991ms
+- logging: 228ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 21:08:41] INFO     Step 850000: train loss 0.4097, test loss 0.4098		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 21:08:41] INFO     Time breakdown so far:
+- cuda: 10h01m20s167ms
+- backward: 7h48m47s864ms
+- dataloading: 7h11m21s932ms
+- forward: 2h01m59s295ms
+- noise: 3m58s122ms
+- evaluation: 2m35s814ms
+- initialization: 43s884ms
+- plotting: 29s471ms
+- checkpointing: 15s101ms
+- logging: 231ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 21:27:51] INFO     Step 860000: train loss 0.3967, test loss 0.4062		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 21:27:51] INFO     Time breakdown so far:
+- cuda: 10h08m25s753ms
+- backward: 7h54m19s410ms
+- dataloading: 7h16m25s584ms
+- forward: 2h03m23s972ms
+- noise: 4m817ms
+- evaluation: 2m37s591ms
+- initialization: 43s884ms
+- plotting: 29s745ms
+- checkpointing: 15s212ms
+- logging: 233ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 21:47:01] INFO     Step 870000: train loss 0.3874, test loss 0.4069		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 21:47:01] INFO     Time breakdown so far:
+- cuda: 10h15m39s984ms
+- backward: 7h59m50s191ms
+- dataloading: 7h21m21s529ms
+- forward: 2h04m48s454ms
+- noise: 4m03s533ms
+- evaluation: 2m39s380ms
+- initialization: 43s884ms
+- plotting: 30s009ms
+- checkpointing: 15s347ms
+- logging: 236ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 22:06:12] INFO     Step 880000: train loss 0.4103, test loss 0.4101		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 22:06:12] INFO     Time breakdown so far:
+- cuda: 10h22m50s181ms
+- backward: 8h05m20s652ms
+- dataloading: 7h26m20s934ms
+- forward: 2h06m14s401ms
+- noise: 4m06s302ms
+- evaluation: 2m41s160ms
+- initialization: 43s884ms
+- plotting: 30s280ms
+- checkpointing: 15s452ms
+- logging: 238ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 22:25:23] INFO     Step 890000: train loss 0.4057, test loss 0.4098		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 22:25:23] INFO     Time breakdown so far:
+- cuda: 10h29m55s185ms
+- backward: 8h10m52s517ms
+- dataloading: 7h31m24s928ms
+- forward: 2h07m38s818ms
+- noise: 4m09s007ms
+- evaluation: 2m42s942ms
+- initialization: 43s884ms
+- plotting: 30s541ms
+- checkpointing: 15s590ms
+- logging: 241ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 22:44:33] INFO     Step 900000: train loss 0.3981, test loss 0.4171		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 22:44:33] INFO     Time breakdown so far:
+- cuda: 10h37m717ms
+- backward: 8h16m24s191ms
+- dataloading: 7h36m28s514ms
+- forward: 2h09m03s226ms
+- noise: 4m11s719ms
+- evaluation: 2m44s718ms
+- initialization: 43s884ms
+- plotting: 30s865ms
+- checkpointing: 15s767ms
+- logging: 244ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 23:03:43] INFO     Step 910000: train loss 0.4039, test loss 0.4165		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 23:03:43] INFO     Time breakdown so far:
+- cuda: 10h44m07s431ms
+- backward: 8h21m55s955ms
+- dataloading: 7h41m31s098ms
+- forward: 2h10m27s566ms
+- noise: 4m14s399ms
+- evaluation: 2m46s495ms
+- initialization: 43s884ms
+- plotting: 31s114ms
+- checkpointing: 15s877ms
+- logging: 247ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 23:22:53] INFO     Step 920000: train loss 0.4069, test loss 0.4069		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 23:22:53] INFO     Time breakdown so far:
+- cuda: 10h51m14s426ms
+- backward: 8h27m27s547ms
+- dataloading: 7h46m33s129ms
+- forward: 2h11m52s108ms
+- noise: 4m17s087ms
+- evaluation: 2m48s283ms
+- initialization: 43s884ms
+- plotting: 31s409ms
+- checkpointing: 15s984ms
+- logging: 249ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-16 23:42:04] INFO     Step 930000: train loss 0.4007, test loss 0.4089		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-16 23:42:04] INFO     Time breakdown so far:
+- cuda: 10h58m17s467ms
+- backward: 8h32m57s829ms
+- dataloading: 7h51m38s779ms
+- forward: 2h13m18s630ms
+- noise: 4m19s879ms
+- evaluation: 2m50s056ms
+- initialization: 43s884ms
+- plotting: 31s717ms
+- checkpointing: 16s108ms
+- logging: 251ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 00:01:14] INFO     Step 940000: train loss 0.3904, test loss 0.4183		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 00:01:14] INFO     Time breakdown so far:
+- cuda: 11h05m20s862ms
+- backward: 8h38m28s939ms
+- dataloading: 7h56m43s709ms
+- forward: 2h14m44s516ms
+- noise: 4m22s653ms
+- evaluation: 2m51s838ms
+- initialization: 43s884ms
+- plotting: 32s016ms
+- checkpointing: 16s219ms
+- logging: 253ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 00:20:24] INFO     Step 950000: train loss 0.3995, test loss 0.4032		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 00:20:24] INFO     Time breakdown so far:
+- cuda: 11h12m26s139ms
+- backward: 8h44m970ms
+- dataloading: 8h01m47s106ms
+- forward: 2h16m09s111ms
+- noise: 4m25s346ms
+- evaluation: 2m53s616ms
+- initialization: 43s884ms
+- plotting: 32s340ms
+- checkpointing: 16s345ms
+- logging: 255ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 00:39:35] INFO     Step 960000: train loss 0.4029, test loss 0.4051		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 00:39:35] INFO     Time breakdown so far:
+- cuda: 11h19m32s878ms
+- backward: 8h49m32s896ms
+- dataloading: 8h06m49s455ms
+- forward: 2h17m33s543ms
+- noise: 4m28s038ms
+- evaluation: 2m55s390ms
+- initialization: 43s884ms
+- plotting: 32s612ms
+- checkpointing: 16s470ms
+- logging: 257ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 00:58:45] INFO     Step 970000: train loss 0.4017, test loss 0.4028		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 00:58:45] INFO     Time breakdown so far:
+- cuda: 11h26m39s680ms
+- backward: 8h55m04s495ms
+- dataloading: 8h11m51s639ms
+- forward: 2h18m58s160ms
+- noise: 4m30s745ms
+- evaluation: 2m57s197ms
+- initialization: 43s884ms
+- plotting: 32s897ms
+- checkpointing: 16s577ms
+- logging: 259ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 01:17:55] INFO     Step 980000: train loss 0.3979, test loss 0.4148		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 01:17:55] INFO     Time breakdown so far:
+- cuda: 11h33m42s400ms
+- backward: 9h35s903ms
+- dataloading: 8h16m57s133ms
+- forward: 2h20m23s842ms
+- noise: 4m33s501ms
+- evaluation: 2m58s975ms
+- initialization: 43s884ms
+- plotting: 33s151ms
+- checkpointing: 16s693ms
+- logging: 262ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 01:37:05] INFO     Step 990000: train loss 0.4058, test loss 0.4076		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 01:37:05] INFO     Time breakdown so far:
+- cuda: 11h40m47s918ms
+- backward: 9h06m06s980ms
+- dataloading: 8h22m559ms
+- forward: 2h21m48s959ms
+- noise: 4m36s229ms
+- evaluation: 3m768ms
+- initialization: 43s884ms
+- plotting: 33s400ms
+- checkpointing: 16s838ms
+- logging: 265ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
+[2025-04-17 01:56:16] INFO     Step 1000000: train loss 0.3925, test loss 0.4114		(File "main.py", line 280, in evaluate_and_save_checkpoint)
+[2025-04-17 01:56:16] INFO     Time breakdown so far:
+- cuda: 11h47m54s489ms
+- backward: 9h11m37s798ms
+- dataloading: 8h27m02s709ms
+- forward: 2h23m14s725ms
+- noise: 4m38s973ms
+- evaluation: 3m02s577ms
+- initialization: 43s884ms
+- plotting: 33s672ms
+- checkpointing: 17s178ms
+- logging: 268ms		(File "main.py", line 281, in evaluate_and_save_checkpoint)
